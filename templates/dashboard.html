@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- TOTAL CARD -->
+    <div class="card shadow-sm border-0 rounded-4 text-center p-4 mb-4 bg-primary text-white">
+        <h5 class="opacity-75">Total Expense</h5>
+        <h1 class="fw-bold">₹{{ "%.2f"|format(total) }}</h1>
+    </div>
+
+    <!-- HEADER -->
+    <div class="row mb-3 align-items-center">
+        <div class="col-md-6">
+            <h3 class="fw-bold text-secondary">
+                {% if total > 0 %}
+                    Your Expenses
+                {% else %}
+                    No Expenses Yet
+                {% endif %}
+            </h3>
+        </div>
+
+        <div class="col-md-6 text-md-end mt-3 mt-md-0">
+            <a href="{{ url_for('add_expense') }}"
+               class="btn btn-success rounded-pill px-4 shadow-sm fw-bold">
+               + Add Expense
+            </a>
+        </div>
+    </div>
+
+    <!-- TABLE / EMPTY STATE -->
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+
+        {% if expenses %}
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+
+                <thead class="table-light text-muted">
+                    <tr>
+                        <th class="px-4 py-3">Date</th>
+                        <th class="px-4 py-3">Category</th>
+                        <th class="px-4 py-3">Description</th>
+                        <th class="px-4 py-3 text-end">Amount</th>
+                        <th class="px-4 py-3 text-end">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for expense in expenses %}
+                    <tr>
+                        <td class="px-4 py-3 text-muted">
+                            {{ expense.date.strftime('%b %d, %Y') }}
+                        </td>
+
+                        <td class="px-4 py-3">
+                            <span class="badge bg-info text-dark rounded-pill">
+                                {{ expense.category }}
+                            </span>
+                        </td>
+
+                        <td class="px-4 py-3">
+                            {{ expense.description if expense.description else '-' }}
+                        </td>
+
+                        <td class="px-4 py-3 text-end fw-bold text-danger">
+                            ₹{{ "%.2f"|format(expense.amount) }}
+                        </td>
+
+                        <td class="px-4 py-3 text-end">
+                            <form action="{{ url_for('delete_expense', expense_id=expense.id) }}"
+                                  method="POST" class="d-inline">
+
+                                <button type="submit"
+                                        class="btn btn-sm btn-outline-danger rounded-circle"
+                                        onclick="return confirm('Delete this expense?');">
+                                    🗑️
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+        {% else %}
+
+        <div class="text-center p-5 text-muted">
+            <h4>No expenses yet</h4>
+            <p class="mb-3">Start adding your first expense</p>
+            <a href="{{ url_for('add_expense') }}"
+               class="btn btn-outline-success rounded-pill px-4">
+               Add First Expense
+            </a>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    <!-- CHART -->
+    {% if expenses %}
+    <div class="row mt-4">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow-sm border-0 rounded-4 p-4">
+                <h5 class="fw-bold text-secondary mb-3 text-center">Expense Breakdown</h5>
+                <div style="height: 350px; display: flex; justify-content: center;">
+                    <canvas id="expenseChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+<!-- CHART JS -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const labels = {{ labels | tojson | safe }};
+    const data = {{ values | tojson | safe }};
+
+    const ctx = document.getElementById('expenseChart');
+
+    if (ctx) {
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: [
+                        '#4CAF50',
+                        '#FF6384',
+                        '#36A2EB',
+                        '#FFCE56',
+                        '#8E44AD',
+                        '#E67E22',
+                        '#00BCD4',
+                        '#E91E63'
+                    ],
+                    borderWidth: 1,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20
+                        }
+                    }
+                }
+            }
+        });
+    }
+});
+</script>
+
+{% endblock %}

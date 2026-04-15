@@ -1,0 +1,32 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+.amount{
+    display: flex;
+    justify-content: center;
+}
+
+.amount_cont {
+    display: flex;
+    flex-direction: column;   /* 🔥 THIS FIXES IT */
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 300px;
+    background-color: #311847;
+    color: white;
+    margin-top: 7rem;
+    margin-bottom: 3rem;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.amount_cont p {
+    margin: 0;
+}
+
+.no_expense{
+    text-align: center;
+}

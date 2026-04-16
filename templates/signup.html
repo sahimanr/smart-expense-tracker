@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content%}
+<form action="{{ url_for('signup') }}" method="POST">
+    <div class="container" style="display: flex; justify-content: center; margin-top: 5rem;">
+        <div class="cont rounded text-white" style="border: 2px solid black; padding:3rem; background-color: #311847;">
+            
+            <div class="head text-center" style="font-size: 2rem; font-weight: bold;">
+                <p>Sign up</p>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label text-white">Email address</label>
+                <input type="email" class="form-control" name="email">
+                <div class="form-text text-white">We'll never share your email.</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label text-white">Password</label>
+                <input type="password" name="password" class="form-control">
+            </div>
+
+            <div class="log text-center">
+                <button type="submit" class="btn btn-primary">Create Account</button>
+            </div>
+
+        </div>
+    </div>
+</form>
+{% endblock %}

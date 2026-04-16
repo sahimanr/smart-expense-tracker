@@ -30,3 +30,62 @@
 .no_expense{
     text-align: center;
 }
+
+/* Responsive Base Styles */
+.chart-container {
+    height: 350px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Tablets (portrait and landscape) */
+@media (max-width: 991px) {
+    .chart-container {
+        height: 300px;
+    }
+}
+
+/* Mobile Devices (large) */
+@media (max-width: 768px) {
+    .chart-container {
+        height: 250px;
+    }
+    
+    .card h1 {
+        font-size: 1.8rem;
+    }
+    
+    .table th, .table td {
+        font-size: 0.9rem;
+    }
+
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 576px) {
+    .chart-container {
+        height: 220px;
+    }
+    
+    .card h1 {
+        font-size: 1.5rem;
+    }
+    
+    .table th, .table td {
+        font-size: 0.8rem;
+    }
+    
+    .btn {
+        font-size: 0.85rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+
+    .card {
+        padding: 1rem !important;
+    }
+}

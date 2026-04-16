@@ -12,8 +12,6 @@ app=Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY")
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
 db= SQLAlchemy(app)
-with app.app_context():
-        db.create_all()
 
 login_manager=LoginManager()
 login_manager.init_app(app)
@@ -34,6 +32,10 @@ class Expense(db.Model):
     description = db.Column(db.String(200), nullable=True)
     date = db.Column(db.Date, default=datetime.utcnow, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+with app.app_context():
+        db.create_all()
+
 
 @login_manager.user_loader
 def load_user(user_id):
